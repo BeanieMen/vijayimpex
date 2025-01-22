@@ -22,7 +22,7 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.name BeanieMan"
+          git config --global user.name "BeanieMen"
           git config --global user.email "jainarjav886@gmail.com"
 
       - name: Deploy to Staging
