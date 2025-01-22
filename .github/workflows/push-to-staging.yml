@@ -36,4 +36,4 @@ jobs:
           git checkout -b $TARGET_BRANCH
           git add -A
           git commit -m "Deploy: Static site update $(date +'%Y-%m-%d %H:%M:%S')"
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/BeanieMen/vijayimpex $TARGET_BRANCH --force
+          git push https://${{ secrets.PAT1 }}@github.com/BeanieMen/vijayimpex $TARGET_BRANCH --force
