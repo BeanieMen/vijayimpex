@@ -1,0 +1,39 @@
+name: Deploy to Staging with npm
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate static files
+        run: bun run generate
+
+      - name: Configure Git
+        run: |
+          git config --global user.name BeanieMan"
+          git config --global user.email "jainarjav886@gmail.com"
+
+      - name: Deploy to Staging
+        env:
+          TARGET_REPO: https://github.com/BeanieMen/vijayimpex
+          TARGET_BRANCH: staging
+        run: |
+          cd .output/public 
+          git init
+          git remote add origin $TARGET_REPO
+          git checkout -b $TARGET_BRANCH
+          git add -A
+          git commit -m "Deploy: Static site update $(date +'%Y-%m-%d %H:%M:%S')"
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/NexusPlayHosting/index-site.git $TARGET_BRANCH --force
