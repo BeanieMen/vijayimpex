@@ -14,7 +14,8 @@
             </div>
             <nuxt-link to="/"
               class="text-xl md:text-2xl font-semibold text-black whitespace-nowrap hover:text-[#4A5A23] transition-colors">
-Aarjav            </nuxt-link>
+              Vijay Impex Global
+            </nuxt-link>
           </div>
 
           <!-- Navigation Links -->
