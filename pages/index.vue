@@ -21,6 +21,7 @@
           <!-- Navigation Links -->
           <div class="hidden md:flex items-center space-x-8">
             <nuxt-link v-for="(item, index) in navItems" :key="index" :to="`#${item.toLowerCase()}`"
+              @click.prevent="scrollTo(item.toLowerCase())"
               class="text-black hover:text-[#556B2F] transition-colors text-sm lg:text-base font-medium py-1.5 px-3 rounded-md hover:bg-[#f5f3d9]">
               {{ item }}
             </nuxt-link>
@@ -74,23 +75,6 @@
       </ClientOnly>
     </section>
 
-    <!-- Services Grid -->
-    <section id="services" class="py-16 animate-on-scroll">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Our Offerings</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-          <div v-for="(service, index) in services" :key="index"
-            class="p-6 border rounded-xl hover:shadow-lg transition-shadow duration-300">
-            <div class="h-16 w-16 bg-green-100 rounded-lg mb-4 flex items-center justify-center">
-              <Icon :name="service.icon" class="w-8 h-8 text-green-700" />
-            </div>
-            <h3 class="text-xl font-semibold mb-2">{{ service.title }}</h3>
-            <p class="text-gray-600">{{ service.description }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- About Section -->
     <section id="about" class="py-16 bg-gray-50 animate-on-scroll">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-12">
@@ -113,14 +97,19 @@
       </div>
     </section>
 
-    <!-- Certifications Section -->
-    <section class="py-16 bg-white animate-on-scroll">
+    <!-- Services Grid -->
+    <section id="services" class="py-16 animate-on-scroll">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h3 class="text-lg font-semibold text-gray-600 text-center mb-8">Certified & Approved By</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
-          <img :data-src="cert" alt="Certification"
-            class="h-20 object-contain opacity-75 hover:opacity-100 transition-opacity duration-300"
-            v-for="(cert, index) in certifications" :key="index">
+        <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Our Offerings</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div v-for="(service, index) in services" :key="index"
+            class="p-6 border rounded-xl hover:shadow-lg transition-shadow duration-300">
+            <div class="h-16 w-16 bg-green-100 rounded-lg mb-4 flex items-center justify-center">
+              <Icon :name="service.icon" class="w-8 h-8 text-green-700" />
+            </div>
+            <h3 class="text-xl font-semibold mb-2">{{ service.title }}</h3>
+            <p class="text-gray-600">{{ service.description }}</p>
+          </div>
         </div>
       </div>
     </section>
@@ -213,7 +202,7 @@
         <!-- Copyright -->
         <div class="border-t border-green-800 mt-8 pt-8 text-center">
           <p class="text-sm text-green-300">
-            Copyright © 2014 vipm.yamac All rights reserved
+            Copyright © 2025 Vijay Impex All rights reserved
           </p>
           <div class="mt-2 flex justify-center gap-4">
             <nuxt-link to="/terms" class="text-green-300 hover:text-green-100 transition-colors duration-300 text-sm">
@@ -228,6 +217,7 @@
     </footer>
   </div>
 </template>
+
 <script setup>
 import { register } from 'swiper/element/bundle'
 import { gsap } from 'gsap'
@@ -240,7 +230,7 @@ const swiperContainer = ref(null)
 const curtain = ref(null)
 let currentAnimation = null
 
-const navItems = ['About', 'Products', 'Services', 'Certifications', 'Contact']
+const navItems = ['About', 'Services', 'Contact']
 const services = [
   {
     icon: 'mdi:fruit-pineapple',
@@ -261,7 +251,6 @@ const services = [
 
 const usefulLinks = [
   { label: 'Home', path: '/' },
-  { label: 'Products', path: '/products' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' }
 ]
@@ -280,12 +269,6 @@ const aboutPoints = [
   '24/7 Quality Support'
 ]
 
-const certifications = [
-  '/certifications/fssai.png',
-  '/certifications/usda.png',
-  '/certifications/iso.png',
-  '/certifications/halal.png'
-]
 
 
 const animateHeroText = (element) => {
@@ -334,6 +317,17 @@ const initScrollAnimations = () => {
   })
 }
 
+const scrollTo = (id) => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+    history.pushState(null, null, `#${id}`);
+  }
+};
+
 onMounted(() => {
   gsap.fromTo(curtain.value,
     { y: '0%' },
@@ -371,6 +365,16 @@ onMounted(() => {
       }
     }
   )
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      const id = href.replace('#', '');
+      if (id) {
+        e.preventDefault();
+        scrollTo(id);
+      }
+    });
+  });
 })
 </script>
 
